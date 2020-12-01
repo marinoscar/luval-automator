@@ -1,0 +1,1 @@
+﻿public enum MouseClickType { None, DoubleLeft, Left, Right, Middle, LeftDown, RightDown, MiddleDown, LeftUp, RightUp, MiddleUp }

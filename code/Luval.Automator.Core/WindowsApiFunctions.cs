@@ -58,12 +58,26 @@ namespace Luval.Automator.Core
             return true;
         }
 
+        [DllImport("user32.dll")]
+        private static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+        
+        enum MouseEvents
+        {
+            MOUSEEVENTF_LEFTDOWN = 0x02,
+            MOUSEEVENTF_LEFTUP = 0x04,
+            MOUSEEVENTF_RIGHTDOWN = 0x08,
+            MOUSEEVENTF_RIGHTUP = 0x10,
+            MOUSEEVENTF_MIDDLEDOWN = 0x20,
+            MOUSEEVENTF_MIDDLEUP = 0x40
+        }
+
+
 
         #endregion
 
 
         #region Helper methods
-        
+
         private static Rectangle GetRelativeRec(Rectangle windowRec, Rectangle elementRec)
         {
             return new Rectangle(
@@ -145,6 +159,62 @@ namespace Luval.Automator.Core
                 }
             }
         }
-        
+
+        public static void MouseClick(MouseClickType clickType, int xMousePosition, int yMousePosition)
+        {
+            switch (clickType)
+            {
+                case MouseClickType.DoubleLeft:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTDOWN, xMousePosition, yMousePosition, 0, 0);
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTUP, xMousePosition, yMousePosition, 0, 0);
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTDOWN, xMousePosition, yMousePosition, 0, 0);
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.Left:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTDOWN, xMousePosition, yMousePosition, 0, 0);
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.Right:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_RIGHTDOWN, xMousePosition, yMousePosition, 0, 0);
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_RIGHTUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.Middle:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_MIDDLEDOWN, xMousePosition, yMousePosition, 0, 0);
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_MIDDLEUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.LeftDown:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTDOWN, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.RightDown:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_RIGHTDOWN, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.MiddleDown:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_MIDDLEDOWN, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.LeftUp:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_LEFTUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.RightUp:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_RIGHTUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                case MouseClickType.MiddleUp:
+                    mouse_event((int)MouseEvents.MOUSEEVENTF_MIDDLEUP, xMousePosition, yMousePosition, 0, 0);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+
     }
 }
