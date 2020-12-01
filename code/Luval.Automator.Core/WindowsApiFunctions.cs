@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,8 +11,17 @@ namespace Luval.Automator.Core
 {
     public static class WindowsApiFunctions
     {
+        #region Private API Calls
+
+        [DllImport("User32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr handle, ref Rectangle rect);
+
         [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -46,7 +56,12 @@ namespace Luval.Automator.Core
             // Return true to indicate that we
             // should continue enumerating windows.
             return true;
-        }
+        } 
+
+
+        #endregion
+
+
 
         public static IEnumerable<WindowHandle> GetWindowHandles()
         {
@@ -70,6 +85,45 @@ namespace Luval.Automator.Core
             return res;
         }
 
+        public static Image CaptureWindow(IntPtr handle)
+        {
+            // Get the size of the window to capture
+            Rectangle rect = new Rectangle();
+            GetWindowRect(handle, ref rect);
+
+            // GetWindowRect returns Top/Left and Bottom/Right, so fix it
+            rect.Width = rect.Width - rect.X;
+            rect.Height = rect.Height - rect.Y;
+
+            var bitmap = new Bitmap(rect.Width, rect.Height);
+            // Use PrintWindow to draw the window into our bitmap
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                IntPtr hdc = g.GetHdc();
+                if (!PrintWindow(handle, hdc, 0))
+                {
+                    int error = Marshal.GetLastWin32Error();
+                    var exception = new System.ComponentModel.Win32Exception(error);
+                    Debug.WriteLine("ERROR: " + error + ": " + exception.Message);
+                }
+                g.ReleaseHdc(hdc);
+            }
+            return bitmap;
+        }
+
+        public static Image CaptureElement(IntPtr handle, Element element)
+        {
+            var elementRec = new Rectangle((int)element.Item.Current.BoundingRectangle.X, (int)element.Item.Current.BoundingRectangle.Y, (int)element.Item.Current.BoundingRectangle.Width, (int)element.Item.Current.BoundingRectangle.Height);
+            var windowImg = CaptureWindow(handle);
+            var cropImg = new Bitmap(elementRec.Width, elementRec.Height);
+            using (Graphics g = Graphics.FromImage(cropImg))
+            {
+                g.DrawImage(windowImg, new Rectangle(0, 0, elementRec.Width, elementRec.Height),
+                                 new Rectangle(0,0, windowImg.Width, windowImg.Height),
+                                 GraphicsUnit.Pixel);
+                return cropImg;
+            }
+        }
         
     }
 }

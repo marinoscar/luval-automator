@@ -34,9 +34,15 @@ namespace Luval.Automator.UI
             }
         }
 
+        private WindowHandle GetSelectedWindowHandle()
+        {
+            if (cboWindows.SelectedIndex <= 0) return null;
+            return ((WindowHandle[])cboWindows.Tag)[cboWindows.SelectedIndex]; 
+        }
+
         private void cboWindows_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedWindow = ((WindowHandle[])cboWindows.Tag)[cboWindows.SelectedIndex];
+            var selectedWindow = GetSelectedWindowHandle();
             var el = Element.FromAutomationElement(AutomationElement.FromHandle(selectedWindow.Handle));
             LoadTree(el);
         }
@@ -53,6 +59,9 @@ namespace Luval.Automator.UI
 
         private void LoadNode(TreeNode root, Element el)
         {
+            var dummy = root.Nodes.Cast<TreeNode>().FirstOrDefault(i => i.Name.StartsWith("Dummy"));
+            if (dummy == null) return; 
+
             var node = new TreeNode()
             {
                 Name = string.Format("{0} - {1} - {2}",el.Item.Current.LocalizedControlType,  el.Item.Current.AutomationId, el.Item.Current.ClassName),
@@ -60,8 +69,8 @@ namespace Luval.Automator.UI
                 Tag = el
             };
             
-            var dummy = root.Nodes.Cast<TreeNode>().FirstOrDefault(i => i.Name.StartsWith("Dummy"));
-            if (dummy != null) root.Nodes.Remove(dummy);
+            
+            root.Nodes.Remove(dummy);
 
             root.Nodes.Add(node);
             node.Nodes.Add(CreateDummyNode());
@@ -94,7 +103,15 @@ namespace Luval.Automator.UI
         private void elementTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node.Tag == null) return;
-            ((Element)e.Node.Tag).Item.SetFocus();
+            var element = ((Element)e.Node.Tag);
+            if(element.Picture == null)
+            {
+                element.Picture = WindowsApiFunctions.CaptureElement(GetSelectedWindowHandle().Handle, element);
+                elementPicture.Image = null;
+                elementPicture.Refresh();
+                elementPicture.Image = element.Picture;
+                elementPicture.Refresh();
+            }
         }
     }
 }

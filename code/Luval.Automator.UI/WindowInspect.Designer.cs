@@ -42,11 +42,16 @@ namespace Luval.Automator.UI
             this.selectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gridBottonPanel = new System.Windows.Forms.Panel();
+            this.spltGridBottom = new System.Windows.Forms.Splitter();
+            this.elementPicture = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
             this.leftPanel.SuspendLayout();
             this.panelRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.elementDS)).BeginInit();
+            this.gridBottonPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.elementPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // topPanel
@@ -110,6 +115,8 @@ namespace Luval.Automator.UI
             // 
             // panelRight
             // 
+            this.panelRight.Controls.Add(this.spltGridBottom);
+            this.panelRight.Controls.Add(this.gridBottonPanel);
             this.panelRight.Controls.Add(this.propertyGrid);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelRight.Location = new System.Drawing.Point(265, 51);
@@ -154,6 +161,33 @@ namespace Luval.Automator.UI
             this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
             this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
             // 
+            // gridBottonPanel
+            // 
+            this.gridBottonPanel.Controls.Add(this.elementPicture);
+            this.gridBottonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gridBottonPanel.Location = new System.Drawing.Point(0, 338);
+            this.gridBottonPanel.Name = "gridBottonPanel";
+            this.gridBottonPanel.Size = new System.Drawing.Size(535, 61);
+            this.gridBottonPanel.TabIndex = 1;
+            // 
+            // spltGridBottom
+            // 
+            this.spltGridBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.spltGridBottom.Location = new System.Drawing.Point(0, 335);
+            this.spltGridBottom.Name = "spltGridBottom";
+            this.spltGridBottom.Size = new System.Drawing.Size(535, 3);
+            this.spltGridBottom.TabIndex = 2;
+            this.spltGridBottom.TabStop = false;
+            // 
+            // elementPicture
+            // 
+            this.elementPicture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementPicture.Location = new System.Drawing.Point(0, 0);
+            this.elementPicture.Name = "elementPicture";
+            this.elementPicture.Size = new System.Drawing.Size(535, 61);
+            this.elementPicture.TabIndex = 0;
+            this.elementPicture.TabStop = false;
+            // 
             // WindowInspect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,6 +206,8 @@ namespace Luval.Automator.UI
             this.panelRight.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.elementDS)).EndInit();
+            this.gridBottonPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.elementPicture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -190,6 +226,9 @@ namespace Luval.Automator.UI
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource elementDS;
+        private System.Windows.Forms.Panel gridBottonPanel;
+        private System.Windows.Forms.Splitter spltGridBottom;
+        private System.Windows.Forms.PictureBox elementPicture;
     }
 }
 
