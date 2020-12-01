@@ -38,20 +38,23 @@ namespace Luval.Automator.UI
             this.splitLeft = new System.Windows.Forms.Splitter();
             this.panelRight = new System.Windows.Forms.Panel();
             this.propertyGrid = new System.Windows.Forms.DataGridView();
-            this.elementDS = new System.Windows.Forms.BindingSource(this.components);
-            this.selectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gridBottonPanel = new System.Windows.Forms.Panel();
             this.spltGridBottom = new System.Windows.Forms.Splitter();
             this.elementPicture = new System.Windows.Forms.PictureBox();
+            this.selectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.elementDS = new System.Windows.Forms.BindingSource(this.components);
+            this.cmnuImage = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuSaveImageAs = new System.Windows.Forms.ToolStripMenuItem();
             this.topPanel.SuspendLayout();
             this.leftPanel.SuspendLayout();
             this.panelRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).BeginInit();
             this.gridBottonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.elementPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).BeginInit();
+            this.cmnuImage.SuspendLayout();
             this.SuspendLayout();
             // 
             // topPanel
@@ -139,28 +142,6 @@ namespace Luval.Automator.UI
             this.propertyGrid.Size = new System.Drawing.Size(535, 399);
             this.propertyGrid.TabIndex = 0;
             // 
-            // elementDS
-            // 
-            this.elementDS.DataSource = typeof(Luval.Automator.Core.ElementSelectionProperty);
-            // 
-            // selectedDataGridViewCheckBoxColumn
-            // 
-            this.selectedDataGridViewCheckBoxColumn.DataPropertyName = "Selected";
-            this.selectedDataGridViewCheckBoxColumn.HeaderText = "Selected";
-            this.selectedDataGridViewCheckBoxColumn.Name = "selectedDataGridViewCheckBoxColumn";
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            // 
-            // valueDataGridViewTextBoxColumn
-            // 
-            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
-            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
-            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
-            // 
             // gridBottonPanel
             // 
             this.gridBottonPanel.Controls.Add(this.elementPicture);
@@ -181,12 +162,49 @@ namespace Luval.Automator.UI
             // 
             // elementPicture
             // 
+            this.elementPicture.ContextMenuStrip = this.cmnuImage;
             this.elementPicture.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementPicture.Location = new System.Drawing.Point(0, 0);
             this.elementPicture.Name = "elementPicture";
             this.elementPicture.Size = new System.Drawing.Size(535, 61);
             this.elementPicture.TabIndex = 0;
             this.elementPicture.TabStop = false;
+            // 
+            // selectedDataGridViewCheckBoxColumn
+            // 
+            this.selectedDataGridViewCheckBoxColumn.DataPropertyName = "Selected";
+            this.selectedDataGridViewCheckBoxColumn.HeaderText = "Selected";
+            this.selectedDataGridViewCheckBoxColumn.Name = "selectedDataGridViewCheckBoxColumn";
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            // 
+            // valueDataGridViewTextBoxColumn
+            // 
+            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            // 
+            // elementDS
+            // 
+            this.elementDS.DataSource = typeof(Luval.Automator.Core.ElementSelectionProperty);
+            // 
+            // cmnuImage
+            // 
+            this.cmnuImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSaveImageAs});
+            this.cmnuImage.Name = "cmnuImage";
+            this.cmnuImage.Size = new System.Drawing.Size(181, 48);
+            // 
+            // mnuSaveImageAs
+            // 
+            this.mnuSaveImageAs.Name = "mnuSaveImageAs";
+            this.mnuSaveImageAs.Size = new System.Drawing.Size(180, 22);
+            this.mnuSaveImageAs.Text = "Save Image As";
+            this.mnuSaveImageAs.Click += new System.EventHandler(this.mnuSaveImageAs_Click);
             // 
             // WindowInspect
             // 
@@ -205,9 +223,10 @@ namespace Luval.Automator.UI
             this.leftPanel.ResumeLayout(false);
             this.panelRight.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).EndInit();
             this.gridBottonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.elementPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).EndInit();
+            this.cmnuImage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -229,6 +248,8 @@ namespace Luval.Automator.UI
         private System.Windows.Forms.Panel gridBottonPanel;
         private System.Windows.Forms.Splitter spltGridBottom;
         private System.Windows.Forms.PictureBox elementPicture;
+        private System.Windows.Forms.ContextMenuStrip cmnuImage;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveImageAs;
     }
 }
 

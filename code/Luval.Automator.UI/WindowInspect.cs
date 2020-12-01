@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Luval.Automator.UI
         private WindowHandle GetSelectedWindowHandle()
         {
             if (cboWindows.SelectedIndex <= 0) return null;
-            return ((WindowHandle[])cboWindows.Tag)[cboWindows.SelectedIndex]; 
+            return ((WindowHandle[])cboWindows.Tag)[cboWindows.SelectedIndex];
         }
 
         private void cboWindows_SelectedIndexChanged(object sender, EventArgs e)
@@ -59,18 +60,12 @@ namespace Luval.Automator.UI
 
         private void LoadNode(TreeNode root, Element el)
         {
-            var dummy = root.Nodes.Cast<TreeNode>().FirstOrDefault(i => i.Name.StartsWith("Dummy"));
-            if (dummy == null) return; 
-
             var node = new TreeNode()
             {
-                Name = string.Format("{0} - {1} - {2}",el.Item.Current.LocalizedControlType,  el.Item.Current.AutomationId, el.Item.Current.ClassName),
+                Name = string.Format("{0} - {1} - {2}", el.Item.Current.LocalizedControlType, el.Item.Current.AutomationId, el.Item.Current.ClassName),
                 Text = string.IsNullOrWhiteSpace(el.Item.Current.Name) ? el.Item.Current.ClassName : el.Item.Current.Name,
                 Tag = el
             };
-            
-            
-            root.Nodes.Remove(dummy);
 
             root.Nodes.Add(node);
             node.Nodes.Add(CreateDummyNode());
@@ -79,7 +74,7 @@ namespace Luval.Automator.UI
 
         private TreeNode CreateDummyNode()
         {
-            return new TreeNode() { Name = string.Format("Dummy - {0}", Guid.NewGuid()), Text = "Empty"};
+            return new TreeNode() { Name = string.Format("Dummy - {0}", Guid.NewGuid()), Text = "Empty" };
         }
 
         private void elementTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -92,6 +87,10 @@ namespace Luval.Automator.UI
         private void elementTree_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             if (e.Node.Tag == null) return;
+            var dummy = e.Node.Nodes.Cast<TreeNode>().FirstOrDefault(i => i.Name.StartsWith("Dummy"));
+            if (dummy == null) return;
+            e.Node.Nodes.Remove(dummy);
+
             var el = ((Element)e.Node.Tag);
             var children = el.Item.FindAll(TreeScope.Children, Condition.TrueCondition).Cast<AutomationElement>().ToList();
             foreach (var child in children)
@@ -104,7 +103,7 @@ namespace Luval.Automator.UI
         {
             if (e.Node.Tag == null) return;
             var element = ((Element)e.Node.Tag);
-            if(element.Picture == null)
+            if (element.Picture == null)
             {
                 element.Picture = WindowsApiFunctions.CaptureElement(GetSelectedWindowHandle().Handle, element);
                 elementPicture.Image = null;
@@ -112,6 +111,19 @@ namespace Luval.Automator.UI
                 elementPicture.Image = element.Picture;
                 elementPicture.Refresh();
             }
+        }
+
+        private void mnuSaveImageAs_Click(object sender, EventArgs e)
+        {
+            if (elementPicture.Image == null) return;
+            var saveDlg = new SaveFileDialog()
+            {
+                Title = "Save Image",
+                RestoreDirectory = true,
+                Filter = "PNG (*.png) | *.png"
+            };
+            saveDlg.ShowDialog();
+            elementPicture.Image.Save(saveDlg.FileName, ImageFormat.Png);
         }
     }
 }

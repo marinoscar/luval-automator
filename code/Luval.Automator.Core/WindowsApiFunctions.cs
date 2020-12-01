@@ -56,20 +56,24 @@ namespace Luval.Automator.Core
             // Return true to indicate that we
             // should continue enumerating windows.
             return true;
-        } 
+        }
 
 
         #endregion
 
 
+        #region Helper methods
+        
         private static Rectangle GetRelativeRec(Rectangle windowRec, Rectangle elementRec)
         {
             return new Rectangle(
                 (elementRec.X - windowRec.X), //relative X
                 (elementRec.Y - windowRec.Y), //relative Y
-                elementRec.Width, 
+                elementRec.Width,
                 elementRec.Height);
-        }
+        } 
+
+        #endregion
 
 
         public static IEnumerable<WindowHandle> GetWindowHandles()
@@ -130,7 +134,15 @@ namespace Luval.Automator.Core
             using (var windowImg = new Bitmap(CaptureWindow(handle)))
             {
                 if (elementRec.Width == windowImg.Width && elementRec.Height == windowImg.Height) return (Bitmap)windowImg.Clone();
-                return windowImg.Clone(GetRelativeRec(windowRec, elementRec), windowImg.PixelFormat);
+                try
+                {
+                    return windowImg.Clone(GetRelativeRec(windowRec, elementRec), windowImg.PixelFormat);
+                }
+                catch
+                {
+                    Debug.WriteLine("Failed to capture the image");
+                    return null;
+                }
             }
         }
         
