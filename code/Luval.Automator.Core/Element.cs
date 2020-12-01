@@ -1,20 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Luval.Automator.Core
 {
     public class Element
     {
+        public Element()
+        {
+
+        }
+
+        public Element(AutomationElement automationElement)
+        {
+            Item = automationElement;
+            Properties = ElementProperty.FromElement(automationElement);
+        }
+
+        private XElement _xml;
+        private List<Element> _children;
+
         public AutomationElement Item { get; set; }
-        public IEnumerable<ElementSelectionProperty> Properties { get; set; }
+        public IEnumerable<ElementProperty> Properties { get; set; }
+        public IEnumerable<Element> Children
+        {
+            get
+            {
+                if (_children == null)
+                    LoadChildren();
+                return _children;
+            }
+        }
         public Image Picture { get; set; }
+        public XElement Xml
+        {
+            get
+            {
+                if (_xml == null)
+                    LoadXml();
+                return _xml;
+            }
+        }
+
 
         public ElementActionResult SetText(string value)
         {
@@ -124,7 +159,7 @@ namespace Luval.Automator.Core
                             Convert.ToInt32(Item.Current.BoundingRectangle.X + (Item.Current.BoundingRectangle.Width / 2)),
                             Convert.ToInt32(Item.Current.BoundingRectangle.Y + (Item.Current.BoundingRectangle.Height / 2)));
                         WindowsApiFunctions.MouseClick(MouseClickType.Left, calculatedPoint.X, calculatedPoint.Y);
-                    }    
+                    }
 
                 }
             }
@@ -136,13 +171,33 @@ namespace Luval.Automator.Core
             return ElementActionResult.CreateSuccess();
         }
 
+        protected virtual void LoadChildren()
+        {
+            _children = new List<Element>();
+            foreach (var el in Item.FindAll(TreeScope.Children, Condition.TrueCondition).Cast<AutomationElement>())
+                _children.Add(Element.FromAutomationElement(el));
+        }
+
+        protected virtual void LoadXml()
+        {
+            _xml = new XElement("Element");
+            foreach (var prop in Properties)
+            {
+                var child = new XElement(prop.Name, prop.Value);
+                child.SetAttributeValue("FullName", string.Format("{0}.{1}", prop.Root, prop.Name));
+                _xml.Add(child);
+            }
+            _xml.SetAttributeValue("AutomationId", Item.Current.AutomationId);
+            _xml.SetAttributeValue("Name", Item.Current.Name);
+            _xml.SetAttributeValue("ClassName", Item.Current.ClassName);
+            _xml.SetAttributeValue("Type", Item.Current.LocalizedControlType);
+            _xml.SetAttributeValue("NativeWindowHandle", Item.Current.NativeWindowHandle);
+            _xml.SetAttributeValue("BoundingRectangle", Item.Current.BoundingRectangle);
+        }
 
         public static Element FromAutomationElement(AutomationElement element)
         {
-            return new Element() {
-                Item = element,
-                Properties = ElementSelectionProperty.FromElement(element)
-            };
+            return new Element(element);
         }
     }
 }

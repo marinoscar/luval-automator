@@ -190,7 +190,7 @@ namespace Luval.Automator.UI
             // 
             // elementDS
             // 
-            this.elementDS.DataSource = typeof(Luval.Automator.Core.ElementSelectionProperty);
+            this.elementDS.DataSource = typeof(Luval.Automator.Core.ElementProperty);
             // 
             // cmnuImage
             // 
