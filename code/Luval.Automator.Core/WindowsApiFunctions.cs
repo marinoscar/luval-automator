@@ -62,6 +62,15 @@ namespace Luval.Automator.Core
         #endregion
 
 
+        private static Rectangle GetRelativeRec(Rectangle windowRec, Rectangle elementRec)
+        {
+            return new Rectangle(
+                (elementRec.X - windowRec.X), //relative X
+                (elementRec.Y - windowRec.Y), //relative Y
+                elementRec.Width, 
+                elementRec.Height);
+        }
+
 
         public static IEnumerable<WindowHandle> GetWindowHandles()
         {
@@ -113,15 +122,15 @@ namespace Luval.Automator.Core
 
         public static Image CaptureElement(IntPtr handle, Element element)
         {
+            var windowRec = default(Rectangle);
+            GetWindowRect(handle, ref windowRec);
+
             var elementRec = new Rectangle((int)element.Item.Current.BoundingRectangle.X, (int)element.Item.Current.BoundingRectangle.Y, (int)element.Item.Current.BoundingRectangle.Width, (int)element.Item.Current.BoundingRectangle.Height);
-            var windowImg = CaptureWindow(handle);
             var cropImg = new Bitmap(elementRec.Width, elementRec.Height);
-            using (Graphics g = Graphics.FromImage(cropImg))
+            using (var windowImg = new Bitmap(CaptureWindow(handle)))
             {
-                g.DrawImage(windowImg, new Rectangle(0, 0, elementRec.Width, elementRec.Height),
-                                 new Rectangle(0,0, windowImg.Width, windowImg.Height),
-                                 GraphicsUnit.Pixel);
-                return cropImg;
+                if (elementRec.Width == windowImg.Width && elementRec.Height == windowImg.Height) return (Bitmap)windowImg.Clone();
+                return windowImg.Clone(GetRelativeRec(windowRec, elementRec), windowImg.PixelFormat);
             }
         }
         
