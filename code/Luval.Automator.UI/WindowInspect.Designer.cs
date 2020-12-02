@@ -37,34 +37,38 @@ namespace Luval.Automator.UI
             this.elementTree = new System.Windows.Forms.TreeView();
             this.splitLeft = new System.Windows.Forms.Splitter();
             this.panelRight = new System.Windows.Forms.Panel();
-            this.propertyGrid = new System.Windows.Forms.DataGridView();
-            this.gridBottonPanel = new System.Windows.Forms.Panel();
             this.spltGridBottom = new System.Windows.Forms.Splitter();
+            this.gridBottonPanel = new System.Windows.Forms.Panel();
             this.elementPicture = new System.Windows.Forms.PictureBox();
+            this.cmnuImage = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuSaveImageAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertyGrid = new System.Windows.Forms.DataGridView();
+            this.btnExportXML = new System.Windows.Forms.Button();
             this.selectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.elementDS = new System.Windows.Forms.BindingSource(this.components);
-            this.cmnuImage = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mnuSaveImageAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnRun = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             this.leftPanel.SuspendLayout();
             this.panelRight.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).BeginInit();
             this.gridBottonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.elementPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).BeginInit();
             this.cmnuImage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).BeginInit();
             this.SuspendLayout();
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.btnRun);
+            this.topPanel.Controls.Add(this.btnExportXML);
             this.topPanel.Controls.Add(this.cboWindows);
             this.topPanel.Controls.Add(this.label1);
             this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(800, 51);
+            this.topPanel.Size = new System.Drawing.Size(800, 77);
             this.topPanel.TabIndex = 2;
             // 
             // cboWindows
@@ -75,7 +79,7 @@ namespace Luval.Automator.UI
             this.cboWindows.FormattingEnabled = true;
             this.cboWindows.Location = new System.Drawing.Point(69, 12);
             this.cboWindows.Name = "cboWindows";
-            this.cboWindows.Size = new System.Drawing.Size(719, 21);
+            this.cboWindows.Size = new System.Drawing.Size(648, 21);
             this.cboWindows.TabIndex = 3;
             this.cboWindows.SelectedIndexChanged += new System.EventHandler(this.cboWindows_SelectedIndexChanged);
             // 
@@ -92,9 +96,9 @@ namespace Luval.Automator.UI
             // 
             this.leftPanel.Controls.Add(this.elementTree);
             this.leftPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.leftPanel.Location = new System.Drawing.Point(0, 51);
+            this.leftPanel.Location = new System.Drawing.Point(0, 77);
             this.leftPanel.Name = "leftPanel";
-            this.leftPanel.Size = new System.Drawing.Size(262, 399);
+            this.leftPanel.Size = new System.Drawing.Size(262, 373);
             this.leftPanel.TabIndex = 3;
             // 
             // elementTree
@@ -102,7 +106,7 @@ namespace Luval.Automator.UI
             this.elementTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementTree.Location = new System.Drawing.Point(0, 0);
             this.elementTree.Name = "elementTree";
-            this.elementTree.Size = new System.Drawing.Size(262, 399);
+            this.elementTree.Size = new System.Drawing.Size(262, 373);
             this.elementTree.TabIndex = 0;
             this.elementTree.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.elementTree_BeforeExpand);
             this.elementTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.elementTree_NodeMouseClick);
@@ -110,9 +114,9 @@ namespace Luval.Automator.UI
             // 
             // splitLeft
             // 
-            this.splitLeft.Location = new System.Drawing.Point(262, 51);
+            this.splitLeft.Location = new System.Drawing.Point(262, 77);
             this.splitLeft.Name = "splitLeft";
-            this.splitLeft.Size = new System.Drawing.Size(3, 399);
+            this.splitLeft.Size = new System.Drawing.Size(3, 373);
             this.splitLeft.TabIndex = 4;
             this.splitLeft.TabStop = false;
             // 
@@ -122,10 +126,52 @@ namespace Luval.Automator.UI
             this.panelRight.Controls.Add(this.gridBottonPanel);
             this.panelRight.Controls.Add(this.propertyGrid);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelRight.Location = new System.Drawing.Point(265, 51);
+            this.panelRight.Location = new System.Drawing.Point(265, 77);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(535, 399);
+            this.panelRight.Size = new System.Drawing.Size(535, 373);
             this.panelRight.TabIndex = 5;
+            // 
+            // spltGridBottom
+            // 
+            this.spltGridBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.spltGridBottom.Location = new System.Drawing.Point(0, 309);
+            this.spltGridBottom.Name = "spltGridBottom";
+            this.spltGridBottom.Size = new System.Drawing.Size(535, 3);
+            this.spltGridBottom.TabIndex = 2;
+            this.spltGridBottom.TabStop = false;
+            // 
+            // gridBottonPanel
+            // 
+            this.gridBottonPanel.Controls.Add(this.elementPicture);
+            this.gridBottonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gridBottonPanel.Location = new System.Drawing.Point(0, 312);
+            this.gridBottonPanel.Name = "gridBottonPanel";
+            this.gridBottonPanel.Size = new System.Drawing.Size(535, 61);
+            this.gridBottonPanel.TabIndex = 1;
+            // 
+            // elementPicture
+            // 
+            this.elementPicture.ContextMenuStrip = this.cmnuImage;
+            this.elementPicture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementPicture.Location = new System.Drawing.Point(0, 0);
+            this.elementPicture.Name = "elementPicture";
+            this.elementPicture.Size = new System.Drawing.Size(535, 61);
+            this.elementPicture.TabIndex = 0;
+            this.elementPicture.TabStop = false;
+            // 
+            // cmnuImage
+            // 
+            this.cmnuImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSaveImageAs});
+            this.cmnuImage.Name = "cmnuImage";
+            this.cmnuImage.Size = new System.Drawing.Size(151, 26);
+            // 
+            // mnuSaveImageAs
+            // 
+            this.mnuSaveImageAs.Name = "mnuSaveImageAs";
+            this.mnuSaveImageAs.Size = new System.Drawing.Size(150, 22);
+            this.mnuSaveImageAs.Text = "Save Image As";
+            this.mnuSaveImageAs.Click += new System.EventHandler(this.mnuSaveImageAs_Click);
             // 
             // propertyGrid
             // 
@@ -139,36 +185,18 @@ namespace Luval.Automator.UI
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(535, 399);
+            this.propertyGrid.Size = new System.Drawing.Size(535, 373);
             this.propertyGrid.TabIndex = 0;
             // 
-            // gridBottonPanel
+            // btnExportXML
             // 
-            this.gridBottonPanel.Controls.Add(this.elementPicture);
-            this.gridBottonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gridBottonPanel.Location = new System.Drawing.Point(0, 338);
-            this.gridBottonPanel.Name = "gridBottonPanel";
-            this.gridBottonPanel.Size = new System.Drawing.Size(535, 61);
-            this.gridBottonPanel.TabIndex = 1;
-            // 
-            // spltGridBottom
-            // 
-            this.spltGridBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.spltGridBottom.Location = new System.Drawing.Point(0, 335);
-            this.spltGridBottom.Name = "spltGridBottom";
-            this.spltGridBottom.Size = new System.Drawing.Size(535, 3);
-            this.spltGridBottom.TabIndex = 2;
-            this.spltGridBottom.TabStop = false;
-            // 
-            // elementPicture
-            // 
-            this.elementPicture.ContextMenuStrip = this.cmnuImage;
-            this.elementPicture.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.elementPicture.Location = new System.Drawing.Point(0, 0);
-            this.elementPicture.Name = "elementPicture";
-            this.elementPicture.Size = new System.Drawing.Size(535, 61);
-            this.elementPicture.TabIndex = 0;
-            this.elementPicture.TabStop = false;
+            this.btnExportXML.Location = new System.Drawing.Point(725, 12);
+            this.btnExportXML.Name = "btnExportXML";
+            this.btnExportXML.Size = new System.Drawing.Size(72, 23);
+            this.btnExportXML.TabIndex = 4;
+            this.btnExportXML.Text = "ExportXML";
+            this.btnExportXML.UseVisualStyleBackColor = true;
+            this.btnExportXML.Click += new System.EventHandler(this.btnExportXML_Click);
             // 
             // selectedDataGridViewCheckBoxColumn
             // 
@@ -192,19 +220,15 @@ namespace Luval.Automator.UI
             // 
             this.elementDS.DataSource = typeof(Luval.Automator.Core.ElementProperty);
             // 
-            // cmnuImage
+            // btnRun
             // 
-            this.cmnuImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuSaveImageAs});
-            this.cmnuImage.Name = "cmnuImage";
-            this.cmnuImage.Size = new System.Drawing.Size(181, 48);
-            // 
-            // mnuSaveImageAs
-            // 
-            this.mnuSaveImageAs.Name = "mnuSaveImageAs";
-            this.mnuSaveImageAs.Size = new System.Drawing.Size(180, 22);
-            this.mnuSaveImageAs.Text = "Save Image As";
-            this.mnuSaveImageAs.Click += new System.EventHandler(this.mnuSaveImageAs_Click);
+            this.btnRun.Location = new System.Drawing.Point(725, 41);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(72, 23);
+            this.btnRun.TabIndex = 5;
+            this.btnRun.Text = "Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
             // WindowInspect
             // 
@@ -222,11 +246,11 @@ namespace Luval.Automator.UI
             this.topPanel.PerformLayout();
             this.leftPanel.ResumeLayout(false);
             this.panelRight.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).EndInit();
             this.gridBottonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.elementPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).EndInit();
             this.cmnuImage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.propertyGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elementDS)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -250,6 +274,8 @@ namespace Luval.Automator.UI
         private System.Windows.Forms.PictureBox elementPicture;
         private System.Windows.Forms.ContextMenuStrip cmnuImage;
         private System.Windows.Forms.ToolStripMenuItem mnuSaveImageAs;
+        private System.Windows.Forms.Button btnExportXML;
+        private System.Windows.Forms.Button btnRun;
     }
 }
 

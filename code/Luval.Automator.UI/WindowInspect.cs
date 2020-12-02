@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -124,6 +125,32 @@ namespace Luval.Automator.UI
             };
             saveDlg.ShowDialog();
             elementPicture.Image.Save(saveDlg.FileName, ImageFormat.Png);
+        }
+
+        private void btnExportXML_Click(object sender, EventArgs e)
+        {
+            var selected = GetSelectedWindowHandle();
+            var windowEl = new WindowElement(AutomationElement.FromHandle(selected.Handle));
+            var saveDlg = new SaveFileDialog()
+            {
+                Title = "Save XML",
+                RestoreDirectory = true,
+                Filter = "xml (*.xml) | *.xml"
+            };
+            saveDlg.ShowDialog();
+            File.WriteAllText(saveDlg.FileName, windowEl.ToXml());
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            var selector = new WindowSelector();
+            var window = selector.Find("SampleMessage", "Main Sample Window");
+            //Children/Element[@Type="button"]/NameProperty[text()="Close"]/.. button
+            //Element[@AutomationId="textBox1"]
+            var textBox = window.Query(@"//Element[@AutomationId=""textBox1""]").FirstOrDefault();
+            var button = window.Query(@"//Children/Element[@Type=""button""]/NameProperty[text()=""Close""]/..").FirstOrDefault();
+            textBox.SetText("My name is Oscar Marin");
+            button.Click();
         }
     }
 }
