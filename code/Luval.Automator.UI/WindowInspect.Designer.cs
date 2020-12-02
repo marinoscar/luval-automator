@@ -31,6 +31,8 @@ namespace Luval.Automator.UI
         {
             this.components = new System.ComponentModel.Container();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.btnOutlook = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.btnRun = new System.Windows.Forms.Button();
             this.btnExportXML = new System.Windows.Forms.Button();
             this.cboWindows = new System.Windows.Forms.ComboBox();
@@ -49,7 +51,6 @@ namespace Luval.Automator.UI
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.elementDS = new System.Windows.Forms.BindingSource(this.components);
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             this.leftPanel.SuspendLayout();
             this.panelRight.SuspendLayout();
@@ -62,6 +63,7 @@ namespace Luval.Automator.UI
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.btnOutlook);
             this.topPanel.Controls.Add(this.btnRefresh);
             this.topPanel.Controls.Add(this.btnRun);
             this.topPanel.Controls.Add(this.btnExportXML);
@@ -72,6 +74,26 @@ namespace Luval.Automator.UI
             this.topPanel.Name = "topPanel";
             this.topPanel.Size = new System.Drawing.Size(800, 77);
             this.topPanel.TabIndex = 2;
+            // 
+            // btnOutlook
+            // 
+            this.btnOutlook.Location = new System.Drawing.Point(590, 39);
+            this.btnOutlook.Name = "btnOutlook";
+            this.btnOutlook.Size = new System.Drawing.Size(105, 23);
+            this.btnOutlook.TabIndex = 7;
+            this.btnOutlook.Text = "Close Outlook";
+            this.btnOutlook.UseVisualStyleBackColor = true;
+            this.btnOutlook.Click += new System.EventHandler(this.btnOutlook_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(647, 12);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(72, 23);
+            this.btnRefresh.TabIndex = 6;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnRun
             // 
@@ -232,16 +254,6 @@ namespace Luval.Automator.UI
             // 
             this.elementDS.DataSource = typeof(Luval.Automator.Core.ElementProperty);
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(647, 12);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(72, 23);
-            this.btnRefresh.TabIndex = 6;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
             // WindowInspect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -289,6 +301,7 @@ namespace Luval.Automator.UI
         private System.Windows.Forms.Button btnExportXML;
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnOutlook;
     }
 }
 

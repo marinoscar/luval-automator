@@ -17,6 +17,13 @@ namespace Luval.Automator.Core
             return new WindowElement(AutomationElement.FromHandle(handle.Handle));
         }
 
+        public WindowElement Find(IntPtr windowHandle)
+        {
+            var handle = WindowsApiFunctions.GetWindowHandles().FirstOrDefault(i => i.Handle == windowHandle);
+            if (handle == null) throw new ElementException(string.Format("Unable to find window for handle: {0}", windowHandle));
+            return new WindowElement(AutomationElement.FromHandle(handle.Handle));
+        }
+
         public WindowElement Find(string processName, string titleRegEx)
         {
             var handle = WindowsApiFunctions.GetWindowHandles().FirstOrDefault(i => i.ProcessName == processName && Regex.IsMatch(i.Title, titleRegEx, RegexOptions.IgnoreCase));

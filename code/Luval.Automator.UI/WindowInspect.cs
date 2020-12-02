@@ -158,5 +158,10 @@ namespace Luval.Automator.UI
         {
             LoadDropdown();
         }
+
+        private void btnOutlook_Click(object sender, EventArgs e)
+        {
+            new PopUpCloser().Execute();
+        }
     }
 }

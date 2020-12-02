@@ -56,6 +56,8 @@
     <Compile Include="BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PopUpCloser.cs" />
+    <Compile Include="PopUpConfig.cs" />
     <Compile Include="WindowInspect.cs">
       <SubType>Form</SubType>
     </Compile>
