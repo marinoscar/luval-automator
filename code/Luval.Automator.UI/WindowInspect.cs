@@ -23,11 +23,12 @@ namespace Luval.Automator.UI
 
         private void WindowInspect_Load(object sender, EventArgs e)
         {
-            InitForm();
+            LoadDropdown();
         }
 
-        private void InitForm()
+        private void LoadDropdown()
         {
+            cboWindows.Items.Clear();
             var windows = WindowsApiFunctions.GetWindowHandles();
             cboWindows.Tag = windows.OrderBy(i => i.ProcessName).ToArray();
             foreach (var window in (WindowHandle[])cboWindows.Tag)
@@ -151,6 +152,11 @@ namespace Luval.Automator.UI
             var button = window.Query(@"//Children/Element[@Type=""button""]/NameProperty[text()=""Close""]/..").FirstOrDefault();
             textBox.SetText("My name is Oscar Marin");
             button.Click();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadDropdown();
         }
     }
 }

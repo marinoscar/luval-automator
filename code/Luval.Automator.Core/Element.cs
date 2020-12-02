@@ -64,11 +64,7 @@ namespace Luval.Automator.Core
         {
             //sample query => '//Children/Element[@Type="button"]/NameProperty[text()="Close"]/..' => Gets a button with the name of Close
             LoadAllChildren();
-            //return Xml.XPathSelectElements(xpath).Select(i => LookForElementNode(i)) //makes sure that there is an element node as a result
-            //    .Where(i => i.Attribute("_InternalHashId") != null && !string.IsNullOrEmpty(i.Attribute("_InternalHashId").Value))
-            //    .Select(i => _allChildren.FirstOrDefault(c => c.GetHashCode() == Convert.ToInt32(i.Attribute("_InternalHashId").Value)));
-            var nodes = Xml.XPathSelectElements(xpath).ToList();
-            return nodes.Select(i => LookForElementNode(i)) //makes sure that there is an element node as a result
+            return Xml.XPathSelectElements(xpath).Select(i => LookForElementNode(i)) //makes sure that there is an element node as a result
                 .Where(i => i.Attribute("_InternalId") != null && !string.IsNullOrEmpty(i.Attribute("_InternalId").Value))
                 .Select(i => _allChildren.FirstOrDefault(c => c.GetHashCode() == Convert.ToInt32(i.Attribute("_InternalId").Value)));
         }

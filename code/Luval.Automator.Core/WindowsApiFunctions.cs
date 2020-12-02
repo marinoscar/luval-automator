@@ -71,6 +71,15 @@ namespace Luval.Automator.Core
             MOUSEEVENTF_MIDDLEUP = 0x40
         }
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("User32.dll", EntryPoint = "SetForegroundWindow")]
+        private static extern IntPtr SetForegroundWindowNative(IntPtr hWnd);
+
 
 
         #endregion
@@ -215,6 +224,21 @@ namespace Luval.Automator.Core
             }
         }
 
+        public static void CloseWindow(IntPtr hWnd)
+        {
+            const UInt32 WM_CLOSE = 0x0010;
+            SendMessage(hWnd, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+        }
+
+        public static void SetWindowState(IntPtr hWnd, WindowState windowState)
+        {
+            ShowWindow(hWnd, (int)windowState);
+        }
+
+        public static void SetForegroundWindow(IntPtr hWnd)
+        {
+            SetForegroundWindowNative(hWnd);
+        }
 
     }
 }
