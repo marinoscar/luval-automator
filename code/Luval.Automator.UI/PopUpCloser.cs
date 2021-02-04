@@ -17,37 +17,41 @@ namespace Luval.Automator.UI
         {
             Configs = new List<PopUpConfig>();
         }
+
+        private class WindowItem { public WindowElement Window { get; set; } public bool IsClosed { get; set; } }
+        private List<WindowItem> _windows;
         public string ProcessName { get; set; }
         public List<PopUpConfig> Configs { get; set; }
 
         public void Execute()
         {
-            Init();
-            _windows = GetWindows();
-            var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
-            var winTask = new Task(() => CloseWindows());
-            var dialogTask = new Task(() => ClosePopUps(), token);
-            winTask.Start();
-            dialogTask.Start();
-            winTask.Wait(60000 * 5);
-            tokenSource.Cancel();
-            Debug.WriteLine("Task");
-            dialogTask.Dispose();
+            ProcessName = "OUTLOOK";
+            Configs.Add(new PopUpConfig() { ButtonxPath = @"//Element[@Type='button' and @Name='No']", TitleRegEx = "Microsoft Outlook" });
+            Configs.Add(new PopUpConfig() { ButtonxPath = @"//Element[@Type='button' and @Name='OK']", TitleRegEx = "Microsoft Outlook" });
+            //Don't save changes
+            LoadAllWindows();
+            CloseMainWindow();
+            Thread.Sleep(2000);
+            DoClosePopUps(10, DateTime.UtcNow);
         }
 
-        private void CloseWindows()
+        private void DoClosePopUps(int minsToWait, DateTime startUtc)
         {
-            var windows = GetWindows();
-            var count = windows.Count;
-            while(count > 0)
+            LoadAllWindows();
+            _windows = _windows.Where(i => i.Window.Item.Current.LocalizedControlType.ToLowerInvariant().Equals("dialog")).ToList();
+            if (!_windows.Any() || DateTime.UtcNow.Subtract(startUtc).TotalMinutes > minsToWait) return;
+            var win = _windows.First();
+            foreach (var config in Configs)
             {
-                windows[0].Close();
-                windows = GetWindows();
-                count = windows.Count;
-                Thread.Sleep(1000);
+                if (ClosePopUp(win.Window, config))
+                {
+                    win.IsClosed = true;
+                    break;
+                }
             }
+            if (win.IsClosed) DoClosePopUps(minsToWait, startUtc);
         }
+
 
         private void ClosePopUps()
         {
@@ -76,12 +80,6 @@ namespace Luval.Automator.UI
             return new WindowSelector().FindAllForProcess(ProcessName).Where(i => i.Item.Current.LocalizedControlType.ToLowerInvariant() == "dialog").ToList();
         }
 
-        private void CloseWindow(WindowElement win)
-        {
-            var closeBtn = win.Query(@"//Element[@Type='title bar']/Children/Element[@Type='button' and @Name='Close']").FirstOrDefault();
-            closeBtn.Click();
-        }
-
         private bool ClosePopUp(WindowElement window, PopUpConfig config)
         {
             if (!string.IsNullOrWhiteSpace(config.LabelTextRegEx) && !IsTitleAMatch(config.TitleRegEx, window)) return false;
@@ -106,12 +104,30 @@ namespace Luval.Automator.UI
         }
 
 
-        private List<WindowElement> _windows;
-
         private void Init()
         {
-            ProcessName = "OUTLOOK";
-            Configs.Add(new PopUpConfig() { ButtonxPath = @"//Element[@Type='button' and @Name='No']", TitleRegEx = "Microsoft Outlook" });
+
         }
+
+        private void CloseMainWindow()
+        {
+            var regEx = "@ey.com - Outlook";
+            var mainWin = _windows.Where(i => Regex.IsMatch(i.Window.Item.Current.Name, regEx) &&
+                                        i.Window.Item.Current.LocalizedControlType.ToLowerInvariant().Equals("window")).First();
+            CloseWindow(mainWin.Window);
+            mainWin.IsClosed = true;
+        }
+
+        private void CloseWindow(WindowElement win)
+        {
+            var closeBtn = win.Query(@"//Element[@Type='title bar']/Children/Element[@Type='button' and @Name='Close']").FirstOrDefault();
+            closeBtn.Click();
+        }
+
+        private void LoadAllWindows()
+        {
+            _windows = new WindowSelector().FindAllForProcess(ProcessName).Select(i => new WindowItem() { Window = i }).ToList();
+        }
+
     }
 }
